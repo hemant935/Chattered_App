@@ -1,1 +1,1 @@
-export 'new_custom_widget.dart' show NewCustomWidget;
+export 'camera_preview_widget.dart' show CameraPreviewWidget;
