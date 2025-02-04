@@ -53,6 +53,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'landing_page',
           path: '/landingPage',
           builder: (context, params) => const LandingPageWidget(),
+        ),
+        FFRoute(
+          name: 'streaming_page',
+          path: '/streamingPage',
+          builder: (context, params) => const StreamingPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
