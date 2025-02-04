@@ -58,6 +58,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'streaming_page',
           path: '/streamingPage',
           builder: (context, params) => const StreamingPageWidget(),
+        ),
+        FFRoute(
+          name: 'start_live_stream',
+          path: '/startLiveStream',
+          builder: (context, params) => const StartLiveStreamWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

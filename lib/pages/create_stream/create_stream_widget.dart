@@ -47,41 +47,38 @@ class _CreateStreamWidgetState extends State<CreateStreamWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30.0,
-            borderWidth: 1.0,
-            buttonSize: 40.0,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: FlutterFlowTheme.of(context).primaryText,
-              size: 30.0,
-            ),
-            onPressed: () async {
-              context.pop();
-            },
-          ),
-          title: Align(
-            alignment: const AlignmentDirectional(-1.0, 0.0),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-              child: Text(
-                'Create Live Stream\n',
-                textAlign: TextAlign.start,
-                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Inter',
-                      fontSize: 20.0,
-                      letterSpacing: 0.0,
-                    ),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            automaticallyImplyLeading: false,
+            leading: FlutterFlowIconButton(
+              borderColor: Colors.transparent,
+              borderRadius: 30.0,
+              borderWidth: 1.0,
+              buttonSize: double.infinity,
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 30.0,
               ),
+              onPressed: () async {
+                context.pop();
+              },
             ),
+            title: Text(
+              'Create Live Stream\n',
+              textAlign: TextAlign.end,
+              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Inter',
+                    fontSize: 20.0,
+                    letterSpacing: 0.0,
+                  ),
+            ),
+            actions: const [],
+            centerTitle: false,
+            elevation: 0.0,
           ),
-          actions: const [],
-          centerTitle: false,
-          elevation: 0.0,
         ),
         body: SafeArea(
           top: true,
@@ -329,13 +326,26 @@ class _CreateStreamWidgetState extends State<CreateStreamWidget> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                       child: Text(
-                        'Upload thumbnail1',
+                        'Upload thumbnail',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Inter',
                               color: FlutterFlowTheme.of(context).primaryText,
                               fontSize: 16.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+                      child: Text(
+                        '+ Add Thumbnail',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Inter',
+                              color: const Color(0xFF2986EE),
+                              fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -376,7 +386,7 @@ class _CreateStreamWidgetState extends State<CreateStreamWidget> {
                           onPressed: () {
                             print('Button pressed ...');
                           },
-                          text: 'Button',
+                          text: 'Boost & Stream',
                           options: FFButtonOptions(
                             width: double.infinity,
                             height: 40.0,
