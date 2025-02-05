@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:chattered_app/pages/view_stream/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../pages/view_stream/view_stream_page_widget.dart';
 import '/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -39,10 +37,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, params) => const StartLiveStreamWidget(),
-          // builder: (context, _) => const LiveStreamVideoPlayer(liveStreamUrl: 'http://10.0.0.184:5080/LiveApp/play.html?id=rY9HH21FsgaPJ9jc542341566086454',),
-
-          // builder: (context, _) => const LiveStreamWebView(liveStreamUrl: 'http://10.0.0.184:5080/LiveApp/play.html?id=rY9HH21FsgaPJ9jc542341566086454',),
+          builder: (context, _) => const CreateStreamWidget(),
         ),
         FFRoute(
           name: 'create_stream',
@@ -68,14 +63,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'start_live_stream',
           path: '/startLiveStream',
           builder: (context, params) => const StartLiveStreamWidget(),
-        ),
-        FFRoute(
-          name: 'live_view',
-          path: '/liveView',
-          builder: (context, _) => const LiveStreamWebView(
-            liveStreamUrl:
-                'http://10.0.0.184:5080/LiveApp/play.html?id=rY9HH21FsgaPJ9jc542341566086454',
-          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -239,8 +226,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() =>
-      const TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {
