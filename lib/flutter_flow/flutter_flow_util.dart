@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -44,6 +45,24 @@ Future launchURL(String url) async {
     await launchUrl(uri);
   } catch (e) {
     throw 'Could not launch $uri: $e';
+  }
+}
+
+class EventBus {
+  static final EventBus _instance = EventBus._internal();
+
+  factory EventBus() {
+    return _instance;
+  }
+
+  EventBus._internal();
+
+  final StreamController<Map<String, dynamic>> _eventController = StreamController.broadcast();
+
+  Stream<Map<String, dynamic>> get onEvent => _eventController.stream;
+
+  void emit(String eventType, Map<String, dynamic> eventData) {
+    _eventController.add({'type': eventType, 'data': eventData});
   }
 }
 
