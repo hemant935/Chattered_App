@@ -16,6 +16,7 @@ class StartLiveStreamWidget extends StatefulWidget {
 
 class _StartLiveStreamWidgetState extends State<StartLiveStreamWidget> {
   late StartLiveStreamModel _model;
+  final EventBus _eventBus = EventBus();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -45,7 +46,8 @@ class _StartLiveStreamWidgetState extends State<StartLiveStreamWidget> {
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+            padding:
+                const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,18 +80,48 @@ class _StartLiveStreamWidgetState extends State<StartLiveStreamWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () {
-                      print('Button pressed ...');
+                      context.go('/streamingPage');
+                      _eventBus.emit('START_STREAMING',{});
                     },
                     text: 'Start Live Stream',
                     options: FFButtonOptions(
                       width: double.infinity,
                       height: 50.0,
                       padding: const EdgeInsets.all(8.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 0.0),
+                      color: const Color(0xFF2986EE),
+                      textStyle:
+                          FlutterFlowTheme.of(context).titleMedium.override(
+                                fontFamily: 'Inter Tight',
+                                color: FlutterFlowTheme.of(context).info,
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.normal,
+                              ),
+                      elevation: 0.0,
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                ),
+                                Padding(
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                  child: FFButtonWidget(
+                    onPressed: () {
+                      context.go('/liveView');
+                    },
+                    text: 'View Live Stream',
+                    options: FFButtonOptions(
+                      width: double.infinity,
+                      height: 50.0,
+                      padding: const EdgeInsets.all(8.0),
+                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 0.0),
                       color: const Color(0xFF2986EE),
                       textStyle:
                           FlutterFlowTheme.of(context).titleMedium.override(
