@@ -79,36 +79,36 @@ class _StartLiveStreamWidgetState extends State<StartLiveStreamWidget> {
                     fit: BoxFit.cover,
                   ),
                 ),
+                // Padding(
+                //   padding:
+                //       const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                //   child: FFButtonWidget(
+                //     onPressed: () {
+                //       context.go('/streamingPage');
+                //       _eventBus.emit('START_STREAMING', {});
+                //     },
+                //     text: 'Start Live Stream',
+                //     options: FFButtonOptions(
+                //       width: double.infinity,
+                //       height: 50.0,
+                //       padding: const EdgeInsets.all(8.0),
+                //       iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                //           0.0, 0.0, 0.0, 0.0),
+                //       color: const Color(0xFF2986EE),
+                //       textStyle:
+                //           FlutterFlowTheme.of(context).titleMedium.override(
+                //                 fontFamily: 'Inter Tight',
+                //                 color: FlutterFlowTheme.of(context).info,
+                //                 fontSize: 16.0,
+                //                 letterSpacing: 0.0,
+                //                 fontWeight: FontWeight.normal,
+                //               ),
+                //       elevation: 0.0,
+                //       borderRadius: BorderRadius.circular(4.0),
+                //     ),
+                //   ),
+                // ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
-                  child: FFButtonWidget(
-                    onPressed: () {
-                      context.go('/streamingPage');
-                      _eventBus.emit('START_STREAMING',{});
-                    },
-                    text: 'Start Live Stream',
-                    options: FFButtonOptions(
-                      width: double.infinity,
-                      height: 50.0,
-                      padding: const EdgeInsets.all(8.0),
-                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                          0.0, 0.0, 0.0, 0.0),
-                      color: const Color(0xFF2986EE),
-                      textStyle:
-                          FlutterFlowTheme.of(context).titleMedium.override(
-                                fontFamily: 'Inter Tight',
-                                color: FlutterFlowTheme.of(context).info,
-                                fontSize: 16.0,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.normal,
-                              ),
-                      elevation: 0.0,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                  ),
-                ),
-                                Padding(
                   padding:
                       const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
                   child: FFButtonWidget(

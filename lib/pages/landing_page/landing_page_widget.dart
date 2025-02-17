@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'landing_page_model.dart';
 export 'landing_page_model.dart';
+import 'package:go_router/go_router.dart'; // Import GoRouter
 
 /// landing page description
 class LandingPageWidget extends StatefulWidget {
@@ -47,7 +48,8 @@ class _LandingPageWidgetState extends State<LandingPageWidget> {
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+            padding:
+                const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +65,7 @@ class _LandingPageWidgetState extends State<LandingPageWidget> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(0.0),
-                    child: SvgPicture.asset(
+                    child: Image.asset(
                       'assets/images/image_1.png',
                       width: 180.0,
                       height: 55.0,
@@ -72,7 +74,8 @@ class _LandingPageWidgetState extends State<LandingPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
                   child: SizedBox(
                     width: double.infinity,
                     height: 460.78,
@@ -103,16 +106,15 @@ class _LandingPageWidgetState extends State<LandingPageWidget> {
                                         ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(0.0),
-                                          child: SvgPicture.asset(
+                                          child: Image.asset(
                                             'assets/images/Group_886282.png',
                                             width: double.infinity,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  20.0, 25.0, 15.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(20.0, 25.0, 15.0, 0.0),
                                           child: Text(
                                             'Boost your network and  Stream faster',
                                             style: FlutterFlowTheme.of(context)
@@ -179,18 +181,20 @@ class _LandingPageWidgetState extends State<LandingPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () {
-                      print('Button pressed ...');
+                      //  context.push('loginPage'); // Corrected navigation
+                      context.go('/landingPage/loginPage');
                     },
                     text: 'Get Started',
                     options: FFButtonOptions(
                       width: double.infinity,
                       height: 50.0,
                       padding: const EdgeInsets.all(8.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 0.0),
                       color: const Color(0xFF2986EE),
                       textStyle:
                           FlutterFlowTheme.of(context).titleMedium.override(

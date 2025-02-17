@@ -42,7 +42,7 @@ class _LiveStreamWebViewState extends State<LiveStreamWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Live Stream')),
+      // appBar: AppBar(title: const Text('Live Stream')),
       body: WebViewWidget(controller: controller),
     );
   }

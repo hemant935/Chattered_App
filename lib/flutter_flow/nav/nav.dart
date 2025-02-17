@@ -2,11 +2,17 @@ import 'dart:async';
 
 import 'package:chattered_app/pages/view_stream/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../pages/DeviceCompatibilitySrceen/Device_compatibility_check_widget.dart';
+import '../../pages/listing_stream/listing_live_stream_widget.dart';
 import '../../pages/view_stream/view_stream_page_widget.dart';
 import '/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:jwt_decoder/jwt_decoder.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -19,6 +25,7 @@ class AppStateNotifier extends ChangeNotifier {
   AppStateNotifier._();
 
   static AppStateNotifier? _instance;
+
   static AppStateNotifier get instance => _instance ??= AppStateNotifier._();
 
   bool showSplashImage = true;
@@ -30,54 +37,95 @@ class AppStateNotifier extends ChangeNotifier {
 }
 
 GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
-      initialLocation: '/',
+      initialLocation: '/landingPage',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
+      // redirect: (context, state) {   // REMOVED REDIRECT LOGIC
+      //   return null;
+      // },
       errorBuilder: (context, state) => const CreateStreamWidget(),
       routes: [
-        FFRoute(
-          name: '_initialize',
-          path: '/',
-          builder: (context, params) => const StartLiveStreamWidget(),
-          // builder: (context, _) => const LiveStreamVideoPlayer(liveStreamUrl: 'http://10.0.0.184:5080/LiveApp/play.html?id=rY9HH21FsgaPJ9jc542341566086454',),
-
-          // builder: (context, _) => const LiveStreamWebView(liveStreamUrl: 'http://10.0.0.184:5080/LiveApp/play.html?id=rY9HH21FsgaPJ9jc542341566086454',),
-        ),
-        FFRoute(
-          name: 'create_stream',
-          path: '/createStream',
-          builder: (context, params) => const CreateStreamWidget(),
-        ),
-        FFRoute(
-          name: 'login_page',
-          path: '/loginPage',
-          builder: (context, params) => const LoginPageWidget(),
-        ),
-        FFRoute(
+        GoRoute(
           name: 'landing_page',
           path: '/landingPage',
-          builder: (context, params) => const LandingPageWidget(),
+          pageBuilder: (context, state) {
+            fixStatusBarOniOS16AndBelow(context);
+            return const MaterialPage(child: LandingPageWidget());
+          },
+          routes: [
+            GoRoute(
+              name: 'login_page',
+              path: 'loginPage',
+              pageBuilder: (context, state) {
+                fixStatusBarOniOS16AndBelow(context);
+                return const MaterialPage(child: LoginPageWidget());
+              },
+            ),
+          ],
         ),
-        FFRoute(
+        GoRoute(
+          name: 'live_streams',
+          path: '/',
+          pageBuilder: (context, state) {
+            fixStatusBarOniOS16AndBelow(context);
+            return const MaterialPage(child: LiveStreamsListingPage());
+          },
+          routes: [
+            GoRoute(
+              name: 'create_stream',
+              path: 'createStream',
+              pageBuilder: (context, state) {
+                fixStatusBarOniOS16AndBelow(context);
+                return const MaterialPage(child: CreateStreamWidget());
+              },
+            ),
+            GoRoute(
+              name: 'live_view',
+              path: 'liveView',
+              pageBuilder: (context, state) {
+                fixStatusBarOniOS16AndBelow(context);
+
+                // Extract the parameters from the GoRouter state
+
+                final String liveStreamUrl =
+                    state.uri.queryParameters['liveStreamUrl'] ??
+                        ''; // Provide a default URL if needed
+
+                return MaterialPage(
+                  child: LiveStreamWebView(
+                    liveStreamUrl: liveStreamUrl,
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              name: 'device_compatibility',
+              path: 'deviceCompatibility',
+              pageBuilder: (context, state) {
+                fixStatusBarOniOS16AndBelow(context);
+                return MaterialPage(child: DeviceCompatibilityCheckScreen());
+              },
+            ),
+          ],
+        ),
+        GoRoute(
           name: 'streaming_page',
           path: '/streamingPage',
-          builder: (context, params) => const StreamingPageWidget(),
+          pageBuilder: (context, state) {
+            fixStatusBarOniOS16AndBelow(context);
+            return const MaterialPage(child: StreamingPageWidget());
+          },
         ),
-        FFRoute(
+        GoRoute(
           name: 'start_live_stream',
           path: '/startLiveStream',
-          builder: (context, params) => const StartLiveStreamWidget(),
+          pageBuilder: (context, state) {
+            fixStatusBarOniOS16AndBelow(context);
+            return const MaterialPage(child: StartLiveStreamWidget());
+          },
         ),
-        FFRoute(
-          name: 'live_view',
-          path: '/liveView',
-          builder: (context, _) => const LiveStreamWebView(
-            liveStreamUrl:
-                'http://10.0.0.184:5080/LiveApp/play.html?id=rY9HH21FsgaPJ9jc542341566086454',
-          ),
-        )
-      ].map((r) => r.toRoute(appStateNotifier)).toList(),
+      ],
     );
 
 extension NavParamExtensions on Map<String, String?> {

@@ -1,9 +1,33 @@
-import 'package:chattered_app/flutter_flow/nav/nav.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 
-class LiveStreamsListingPage extends StatelessWidget {
-  const LiveStreamsListingPage({super.key});
+class LiveStreamsListingPage extends StatefulWidget {
+  const LiveStreamsListingPage({Key? key}) : super(key: key);
+
+  @override
+  _LiveStreamsListingPageState createState() => _LiveStreamsListingPageState();
+}
+
+class _LiveStreamsListingPageState extends State<LiveStreamsListingPage> {
+  List<dynamic> _liveStreams = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLiveStreams();
+  }
+
+  Future<void> _loadLiveStreams() async {
+    final jsonString = await rootBundle.loadString('assets/live_streams.json');
+    final jsonData = jsonDecode(jsonString);
+
+    setState(() {
+      _liveStreams = jsonData['streams'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +37,6 @@ class LiveStreamsListingPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: SingleChildScrollView(
-            // Wrap the Column with SingleChildScrollView
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -42,7 +65,7 @@ class LiveStreamsListingPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 8.0),
                   child: Text(
-                    "Available streams (4)",
+                    "Available streams (${_liveStreams.length})",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey[600],
@@ -50,21 +73,17 @@ class LiveStreamsListingPage extends StatelessWidget {
                   ),
                 ),
                 ListView.builder(
-                  // Use ListView.builder for scrollable content
-                  shrinkWrap:
-                      true, // Important: Allow ListView to size itself within the Column
-                  physics:
-                      const NeverScrollableScrollPhysics(), // Disable scrolling for the inner ListView.  The SingleChildScrollView handles scrolling.
-                  itemCount: 4, // Replace with the actual number of streams
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _liveStreams.length,
                   itemBuilder: (context, index) {
-                    // Replace this with your stream data loading logic
-                    return const LiveStreamItem(
-                      imageUrl:
-                          'https://i3.ytimg.com/vi/hQcFE0RD0cQ/maxresdefault.jpg',
-                      title:
-                          "[LIVE] Arsenal vs Aston Villa Premier League 24/25 Full Match - Video Game",
-                      streamer: "Jeffry Tom",
-                      viewers: "2.7k",
+                    final stream = _liveStreams[index];
+                    return LiveStreamItem(
+                      streamId: stream['streamId'],
+                      name: stream['name'],
+                      description: stream['description'],
+                      thumbnail: stream['thumbnail'],
+                      rtmpUrl: stream['rtmpUrl'],
                     );
                   },
                 ),
@@ -75,9 +94,7 @@ class LiveStreamsListingPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add functionality for the FAB
-            context.go('/createStream');
-
+          context.push('/createStream');
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
@@ -108,88 +125,101 @@ class LiveStreamsListingPage extends StatelessWidget {
 }
 
 class LiveStreamItem extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String streamer;
-  final String viewers;
+  final String streamId;
+  final String name;
+  final String description;
+  final String thumbnail;
+  final String rtmpUrl;
 
-  const LiveStreamItem({super.key, 
-    required this.imageUrl,
-    required this.title,
-    required this.streamer,
-    required this.viewers,
-  });
+  const LiveStreamItem({
+    Key? key,
+    required this.streamId,
+    required this.name,
+    required this.description,
+    required this.thumbnail,
+    required this.rtmpUrl,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 10,
-                left: 8,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Text(
-                    "LIVE",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+    final liveStreamUrl =
+        'http://10.0.0.184:5080/LiveApp/play.html?id=$streamId';
+
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the stream view page with the constructed RTMP URL
+        context.goNamed('live_view',
+            queryParameters: {'liveStreamUrl': liveStreamUrl});
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: CachedNetworkImage(
+                      imageUrl: thumbnail,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+                Positioned(
+                  top: 10,
+                  left: 8,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Text(
+                      "LIVE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0, bottom: 20.0),
-            child: Text(
-              "$streamer | $viewers Watching",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600],
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0, bottom: 20.0),
+              child: Text(
+                description, // Show the description now
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

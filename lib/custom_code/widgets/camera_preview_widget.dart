@@ -160,11 +160,11 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
                     ),
                   ),
                   SizedBox(width: 10),
-                  Icon(Icons.person, color: Colors.white),
-                  Text('247',
-                      style: TextStyle(
-                          color: Colors
-                              .white)), // Replace with actual viewer count
+                  // Icon(Icons.person, color: Colors.white),
+                  // Text('247',
+                  //     style: TextStyle(
+                  //         color: Colors
+                  //             .white)), // Replace with actual viewer count
                 ],
               ),
             ),
@@ -204,8 +204,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
                     if (_isStreaming) {
                       await _stopStreaming();
                       if (context.mounted) {
-                        context.go(
-                            '/startLiveStream'); // Navigate back to the root route
+                        context.go('/'); // Navigate back to the root route
                       }
                     }
                   },
